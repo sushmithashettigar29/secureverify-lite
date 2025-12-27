@@ -17,7 +17,24 @@ const getUserDocuments = async (userId) => {
   return result.rows;
 };
 
+const getDocumentById = async (docId) => {
+  const result = await pool.query("SELECT * FROM documents WHERE id = $1", [
+    docId,
+  ]);
+  return result.rows[0];
+};
+
+const updateDocumentStatus = async (docId, status) => {
+  const result = await pool.query(
+    "UPDATE documents SET status = $1 WHERE id = $2 RETURNING *",
+    [status, docId]
+  );
+  return result.rows[0];
+};
+
 module.exports = {
   createDocument,
   getUserDocuments,
+  getDocumentById,
+  updateDocumentStatus,
 };
