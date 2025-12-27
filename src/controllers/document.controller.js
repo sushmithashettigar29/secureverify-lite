@@ -5,6 +5,7 @@ const {
   getDocumentById,
   updateDocumentStatus,
 } = require("../models/document.model");
+const { createAuditLog } = require("../models/audit.model");
 
 // Upload document (USER)
 const uploadDocument = async (req, res) => {
@@ -22,6 +23,9 @@ const uploadDocument = async (req, res) => {
       filePath,
       fileHash
     );
+
+    // Audit log
+    await createAuditLog("DOCUMENT_UPLOADED", req.user.userId, document.id);
 
     return res.status(201).json({
       message: "Document uploaded successfully",
@@ -69,15 +73,23 @@ const verifyDocument = async (req, res) => {
     // Recompute hash for tamper detection
     const currentHash = generateFileHash(document.file_path);
 
+    // Tampering detected
     if (currentHash !== document.file_hash) {
       await updateDocumentStatus(documentId, "REJECTED");
+
+      await createAuditLog("DOCUMENT_TAMPERED", req.user.userId, documentId);
+
       return res.status(400).json({
         message: "Document tampered. Verification failed.",
       });
     }
 
+    // Valid verification flow
     if (decision === "VERIFY") {
       const updated = await updateDocumentStatus(documentId, "VERIFIED");
+
+      await createAuditLog("DOCUMENT_VERIFIED", req.user.userId, documentId);
+
       return res.status(200).json({
         message: "Document verified successfully",
         document: updated,
@@ -86,6 +98,9 @@ const verifyDocument = async (req, res) => {
 
     if (decision === "REJECT") {
       const updated = await updateDocumentStatus(documentId, "REJECTED");
+
+      await createAuditLog("DOCUMENT_REJECTED", req.user.userId, documentId);
+
       return res.status(200).json({
         message: "Document rejected",
         document: updated,
