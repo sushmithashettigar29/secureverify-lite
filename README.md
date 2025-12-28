@@ -92,22 +92,23 @@ Audit logs enable **full traceability** of system activity.
 - Executed 100+ system actions, including uploads, verifications, rejections, logins, and tamper attempts
 - Verified via PostgreSQL audit log queries
 ```
-    # Total audit activity
-    SELECT COUNT(*) AS total_system_actions
-    FROM audit_logs;
+-- Retrieve the total number of system actions recorded in audit logs
+SELECT COUNT(*) AS total_system_actions
+FROM audit_logs;
 
-    # All Details
-    SELECT action, COUNT(*)
-    FROM audit_logs
-    GROUP BY action
-    ORDER BY COUNT(*) DESC;
+-- Retrieve a breakdown of all audit actions with their respective counts
+SELECT action, COUNT(*) AS action_count
+FROM audit_logs
+GROUP BY action
+ORDER BY action_count DESC;
 
-    # This query shows all tampered documents were rejected.
-    SELECT 
-    COUNT(*) AS total_tampered,
-    SUM(CASE WHEN action = 'DOCUMENT_TAMPERED' THEN 1 ELSE 0 END) AS detected_tampered
-    FROM audit_logs
-    WHERE action = 'DOCUMENT_TAMPERED';
+-- Verify that all tampered documents were detected and logged successfully
+SELECT 
+    COUNT(*) AS total_tamper_attempts,
+    SUM(CASE WHEN action = 'DOCUMENT_TAMPERED' THEN 1 ELSE 0 END) AS detected_tamper_events
+FROM audit_logs
+WHERE action = 'DOCUMENT_TAMPERED';
+
 ```
 ![Testing and Validation](/Images/Testing-Validation.png)
 
@@ -122,13 +123,16 @@ Audit logs enable **full traceability** of system activity.
 - Tamper attempts detected: 8
 
 **Accuracy Calculation**
+```
     Accuracy = (Detected / Attempted) × 100
     Accuracy = (8 / 8) × 100 = 100%
+```
 
 All tampering attempts during testing were successfully detected and rejected, confirmed via audit logs.
 
 
 ## Project Structure
+```
 secureverify-lite/
     ├── src/
     │   ├── config/
@@ -137,14 +141,13 @@ secureverify-lite/
     │   ├── routes/
     │   ├── middleware/
     │   ├── utils/
-    │   └── app.js
-    │   └── server.js
-    ├── uploads/           
+    │   ├── app.js
+    │   ├── server.js           
     ├── Images/       
     ├── package.json
-    ├── .env
     ├── README.md
     └── .gitignore
+```
 
 ## What This Project Demonstrates
 - Backend system design
@@ -153,3 +156,9 @@ secureverify-lite/
 - Workflow enforcement
 - Audit-friendly architecture
 - Practical security thinking
+
+
+## Design Decisions
+- Hash-based tamper detection was chosen to ensure deterministic and efficient file integrity validation.
+- Verification workflows are immutable to prevent post-decision manipulation.
+- Audit logging is implemented to support traceability, compliance, and administrative monitoring.
