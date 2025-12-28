@@ -22,13 +22,14 @@ This project focuses on backend correctness, security, and workflow integrity, n
 - PostgreSQL-backed relational data model
 
 ### Tech Stack
+---
 |   Layer	          |     Technology                                          |
 | ------------------- | ------------------------------------------------------- |
-|   Backend	          |     Node.js, Express.js                                 |
-|   Database    	  |     PostgreSQL                                          |
-|   Authentication    |     JWT, bcrypt                                         |
-|   Authorization     |     Role-Based Access Control (USER, VERIFIER, ADMIN)   |
-|   Security    	  |     SHA-256 hashing                                     |
-|   File Uploads      |     Multer                                              |
-|   Testing 	      |     Postman                                             |
-|   Version Control   |     Git, GitHub                                         |
+|   **Backend**	          |     Node.js, Express.js                                 |
+|   **Database**    	  |     PostgreSQL                                          |
+|   **Authentication**    |     JWT, bcrypt                                         |
+|   **Authorization**     |     Role-Based Access Control (USER, VERIFIER, ADMIN)   |
+|   **Security**    	  |     SHA-256 hashing                                     |
+|   **File Uploads**      |     Multer                                              |
+|   **Testing** 	      |     Postman                                             |
+|   **Version Control**   |     Git, GitHub                                         |
