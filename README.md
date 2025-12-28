@@ -23,6 +23,7 @@ This project focuses on backend correctness, security, and workflow integrity, n
 
 ### Tech Stack
 |   Layer	          |     Technology                                          |
+| ------------------- | ------------------------------------------------------- |
 |   Backend	          |     Node.js, Express.js                                 |
 |   Database    	  |     PostgreSQL                                          |
 |   Authentication    |     JWT, bcrypt                                         |
