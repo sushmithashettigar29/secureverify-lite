@@ -1,4 +1,4 @@
-# SecureVerify Lite – Document Verification Pipeline
+# SecureVerify – Document Verification Pipeline
 
 A secure backend system for document verification with tamper detection, role-based access control, and full audit logging.
 Designed to simulate real-world enterprise verification workflows used in banking, hiring, and government systems.
